@@ -18,15 +18,15 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public ChatMessage processMessage(ChatMessage chatMessage) {
         ChatMessage enrichedMessage = null;
-//        if (chatMessage.getSender().equals("1")){
+        if (chatMessage.getSender().equals("1")){
             // Add any message processing logic here (filtering, formatting, etc.)
             enrichedMessage = messageUtils.enrichMessage(chatMessage);
             // Send to all subscribed WebSocket clients on the /topic/public destination
             messagingTemplate.convertAndSend("/topic/public", enrichedMessage); 
-//        }
-//        else {
-//            new IllegalArgumentException("Sender does not match");
-//        }
+        }
+        else {
+            new IllegalArgumentException("Sender does not match");
+        }
         return enrichedMessage;
     }
 

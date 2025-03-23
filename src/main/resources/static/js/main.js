@@ -14,7 +14,8 @@ let username = null;
 
 // Connect to WebSocket
 function connect(event) {
-    username = document.querySelector('#name').value.trim();
+    // username = document.querySelector('#name').value.trim();
+    username = "socket";
 
     if (username) {
         usernamePage.classList.add('hidden');
@@ -53,7 +54,7 @@ function onError(error) {
 }
 
 // Send message function
-function sendMessage(event) {
+function sendMessage(event, arg) {
     const messageContent = messageInput.value.trim();
 
     if (messageContent && stompClient) {
@@ -72,6 +73,7 @@ function sendMessage(event) {
 // Message received callback
 function onMessageReceived(payload) {
     const message = JSON.parse(payload.body);
+    console.log(message);
 
     const messageElement = document.createElement('li');
 
@@ -126,11 +128,15 @@ const COLORS = [
 ];
 
 // Event listeners
-usernameForm.addEventListener('submit', connect, true);
+
+window.onload = function () {
+    connect(event);
+};
+usernameForm.addEventListener('submit', connect, true); // ID 1:2
 messageForm.addEventListener('submit', sendMessage, true);
 
 // Reconnection logic
-window.addEventListener('online', function() {
+window.addEventListener('online', function () {
     if (username && !stompClient) {
         const socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
